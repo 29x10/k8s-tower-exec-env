@@ -1,0 +1,18 @@
+version: 3
+
+build_arg_defaults: 
+  ANSIBLE_GALAXY_CLI_COLLECTION_OPTS: ''
+
+dependencies:
+  galaxy: requirements.yml
+  python:
+    - kubernetes
+  system: bindep.txt
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest
+
+additional_build_steps:
+  prepend_base:
+    - ADD linux-amd64/helm /usr/local/bin/helm
