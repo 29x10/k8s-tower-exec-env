@@ -7,6 +7,7 @@ dependencies:
   galaxy: requirements.yml
   python:
     - kubernetes
+    - openshift
   system: bindep.txt
 
 images:
@@ -14,5 +15,8 @@ images:
     name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest
 
 additional_build_steps:
-  prepend_base:
+  append_final:
     - ADD linux-amd64/helm /usr/local/bin/helm
+    - RUN mkdir -p /runner/helm_plugin && chgrp 0 /runner/helm_plugin && chmod -R ug+rwx /runner/helm_plugin
+    - ENV HELM_PLUGINS=/home/runner/helm_plugin
+    - RUN helm plugin install https://github.com/databus23/helm-diff
